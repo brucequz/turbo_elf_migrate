@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <queue>
 
@@ -31,9 +33,9 @@ FeedbackTrellis::FeedbackTrellis(int k, int n, int v,
   for (int i = 0; i < numerators.size(); i++) {
     this->numerators_.push_back(numerators[i]);
   }
-  this->numInputSymbols_ = pow(2.0, k_);
-  this->numOutputSymbols_ = pow(2.0, n);
-  this->numStates_ = pow(2.0, v);
+  this->numInputSymbols_ = std::pow(2.0, k_);
+  this->numOutputSymbols_ = std::pow(2.0, n);
+  this->numStates_ = std::pow(2.0, v);
   this->nextStates_ = std::vector<std::vector<int>>(
       numStates_, std::vector<int>(numInputSymbols_));
   this->outputs_ = std::vector<std::vector<int>>(
@@ -58,7 +60,7 @@ void FeedbackTrellis::computeNextStates() {
     int decIn = 0;
     std::string in = std::to_string(tempNum);
     for (int p = (in.length() - 1); p >= 0; p--)
-      decIn += (int)(in[p] - '0') * pow(8, (in.length() - p - 1));
+      decIn += (int)(in[p] - '0') * std::pow(8, (in.length() - p - 1));
     for (int j = v_; j >= 0; j--) {
       if (decIn % 2 == 0)
         gs[k_ - i - 1][j] = 0;
@@ -83,7 +85,7 @@ void FeedbackTrellis::computeNextStates() {
   int decIn = 0;
   std::string in = std::to_string(denominator_);
   for (int p = (in.length() - 1); p >= 0; p--)
-    decIn += (int)(in[p] - '0') * pow(8, (in.length() - p - 1));
+    decIn += (int)(in[p] - '0') * std::pow(8, (in.length() - p - 1));
   for (int j = v_; j >= 0; j--) {
     if (decIn % 2 == 0)
       b[j] = '0';
@@ -220,7 +222,7 @@ void FeedbackTrellis::computeNextStates() {
       int nextState = 0;
       for (int i = (next_sigmas.size() - 1); i >= 0; i--) {
         nextState += next_sigmas[i] *
-                     pow(2, (next_sigmas.size() - 1 -
+                     std::pow(2, (next_sigmas.size() - 1 -
                              i)); // convert next_sigmas back into decimal value
       }
 
@@ -232,7 +234,7 @@ void FeedbackTrellis::computeNextStates() {
       }
       int output = 0;
       for (int i = (nextOutput.size() - 1); i >= 0; i--) {
-        output += nextOutput[i] * pow(2, nextOutput.size() - 1 - i);
+        output += nextOutput[i] * std::pow(2, nextOutput.size() - 1 - i);
       }
       outputs_[currentState][input] = output;
       // std::cout << output << std::endl;
@@ -251,7 +253,7 @@ std::vector<int> FeedbackTrellis::encoder(std::vector<int> originalMessage) {
     for (int i = 0; i < originalMessage.size(); i += k_) {
       int decimal = 0;
       for (int j = 0; j < k_; j++) {
-        decimal += (originalMessage[i + j] * pow(2, k_ - j - 1));
+        decimal += (originalMessage[i + j] * std::pow(2, k_ - j - 1));
       }
       std::vector<int> outputBinary = dec2Bin(outputs_[State][decimal], n_);
       State = nextStates_[State][decimal];
@@ -330,7 +332,7 @@ FeedbackTrellis::terminateMsg(std::vector<int> originalMessage) {
   for (int i = 0; i < originalMessage.size(); i += k_) {
     int decimal = 0;
     for (int j = 0; j < k_; j++) {
-      decimal += (originalMessage[i + j] * pow(2, k_ - j - 1));
+      decimal += (originalMessage[i + j] * std::pow(2, k_ - j - 1));
     }
     std::vector<int> outputBinary = dec2Bin(outputs_[finalState][decimal], n_);
     finalState = nextStates_[finalState][decimal];
@@ -361,7 +363,7 @@ FeedbackTrellis::ztencoder(std::vector<int> terminatedMessage) {
   for (int i = 0; i < terminatedMessage.size(); i += k_) {
     int decimal = 0;
     for (int j = 0; j < k_; j++) {
-      decimal += (terminatedMessage[i + j] * pow(2, k_ - j - 1));
+      decimal += (terminatedMessage[i + j] * std::pow(2, k_ - j - 1));
     }
     std::vector<int> outputBinary = dec2Bin(outputs_[State][decimal], n_);
     State = nextStates_[State][decimal];

@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "../include/turbo_elf.h"
 #include "../include/constants.h"
 #include "../include/feedbacktrellis.h"

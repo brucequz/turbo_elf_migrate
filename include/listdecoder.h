@@ -1,6 +1,7 @@
 #ifndef LISTDECODER_H
 #define LISTDECODER_H
 
+#include <climits>
 #include <queue>
 #include <map>
 
