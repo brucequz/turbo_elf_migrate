@@ -131,11 +131,15 @@ public:
     DLDInfo pop_queue();
     DLDInfo get_top();
 
-    std::map<std::vector<int>, ListDecoder::messageInformation> dual_list_map_; // dictionary
+    std::map<std::vector<int>, ListDecoder::messageInformation> dual_list_dict_; // dictionary
     std::priority_queue<DLDInfo, std::vector<DLDInfo>, CompareCombinedMetric> agreed_messages_; // priority queue
 	};
 
 	DLDInfo DualListDecoding_TurboELF_BAM(std::vector<double> txSig_0, std::vector<double> txSig_1, unsigned short int* interleaver_ptr, unsigned short int* deinterleaver_ptr);
+
+	DLDInfo DualListDecoding_TurboELF_BAM_distance_spectrum(std::vector<double> txSig_0, std::vector<double> txSig_1, unsigned short int* interleaver_ptr, unsigned short int* deinterleaver_ptr);
+
+	DLDInfo DualListDecoding_TurboELF_BAM_genie(std::vector<double> txSig_0, std::vector<double> txSig_1, unsigned short int* interleaver_ptr, unsigned short int* deinterleaver_ptr, std::vector<double> genie_metrics);
 
 private:
 	std::vector<ListDecoder> list_decoders_;

@@ -122,7 +122,7 @@ int make_file_interleaver(char interleaver_file[],
   return 0;
 }
 
-void elf_turbo_simulation(codeInformation code) {
+void elf_turbo_simulation(codeInformation code, std::vector<double> SNR) {
 
   std::ofstream outFile;
   outFile.open("../output/output.txt");
@@ -150,8 +150,6 @@ void elf_turbo_simulation(codeInformation code) {
     deinterleaver[interleaver[i]] = i;
   }
 
-  std::vector<double> SNR = {3.0};
-
   // outer loop: SNR
   for (int s = 0; s < SNR.size(); s++) {
     double cur_SNR = SNR[s];
@@ -173,14 +171,15 @@ void elf_turbo_simulation(codeInformation code) {
 
       std::vector<int> original_message;
       for (int i = 0; i < code.numInfoBits; i++) {
-        original_message.push_back(rand() % 2);
-        // original_message.push_back(0);
+        // original_message.push_back(rand() % 2);
+        original_message.push_back(0);
       }
 
       crc::crc_calculation(original_message, code.crcDeg, code.crc);
 
       std::vector<int> encodedMessage =
           encodingTrellis.encoder(original_message);
+
       // get parity bits
       std::vector<int> X_R1;
       std::vector<int> X_sys;
@@ -286,7 +285,7 @@ void elf_turbo_simulation(codeInformation code) {
 
       std::vector<codeInformation> codeList = {code, code};
       DualListDecoder DLD(codeList, LISTSIZE, punc_idx);
-      DLDInfo result = DLD.DualListDecoding_TurboELF_BAM(
+      DLDInfo result = DLD.DualListDecoding_TurboELF_BAM_distance_spectrum(
           DLD_R1, DLD_R2, interleaver, deinterleaver);
 
       // process return type

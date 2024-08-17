@@ -14,11 +14,11 @@
 #include "../include/minheap.h"
 
 int MAXERRORS = 100;
-int NUMTRIALS = 1e4;
-int LISTSIZE  = 1000;
+int NUMTRIALS = 100000;
+int LISTSIZE  = 10000;
+std::vector<double> SNR = {3};
 
 namespace {
-
 std::vector<double>
 ComputeSquaredDifferences(const std::vector<int> &vector1,
                           const std::vector<double> &vector2) {
@@ -44,7 +44,7 @@ ComputeSquaredDifferences(const std::vector<int> &vector1,
 
 static std::default_random_engine generator;
 
-void elf_turbo_simulation(codeInformation code);
+void elf_turbo_simulation(codeInformation code, std::vector<double> SNR);
 
 int main() {
   codeInformation code;
@@ -60,7 +60,7 @@ int main() {
   code.denominator = 171;
   code.hMatrix = {{1, 0, 0, 1, 1, 1, 1}, {1, 1, 0, 1, 1, 0, 1}};
 
-  elf_turbo_simulation(code);
+  elf_turbo_simulation(code, SNR);
 
   return 0;
 }
