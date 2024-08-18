@@ -14,8 +14,8 @@
 #include "../include/minheap.h"
 
 int MAXERRORS = 100;
-int NUMTRIALS = 100000;
-int LISTSIZE  = 10000;
+int NUMTRIALS = 100;
+int LISTSIZE  = 1000000;
 std::vector<double> SNR = {3};
 
 namespace {

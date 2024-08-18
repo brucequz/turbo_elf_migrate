@@ -165,7 +165,7 @@ void elf_turbo_simulation(codeInformation code, std::vector<double> SNR) {
     // inner loop: MC trials
     while (numerror < MAXERRORS && numtrial < NUMTRIALS) {
 
-      if (numtrial % 1000 == 0) {
+      if (numtrial % 1 == 0) {
         std::cout << "trial number: " << numtrial << std::endl;
       }
 
@@ -283,10 +283,13 @@ void elf_turbo_simulation(codeInformation code, std::vector<double> SNR) {
         DLD_R2.push_back(pi_Y_sys[i]);
       }
 
+      // genie aided decoder info
+      std::vector<double> genie_info = {R1_squraed_diff + sys_squraed_diff, R2_squraed_diff + sys_squraed_diff};
+
       std::vector<codeInformation> codeList = {code, code};
       DualListDecoder DLD(codeList, LISTSIZE, punc_idx);
-      DLDInfo result = DLD.DualListDecoding_TurboELF_BAM_distance_spectrum(
-          DLD_R1, DLD_R2, interleaver, deinterleaver);
+      DLDInfo result = DLD.DualListDecoding_TurboELF_BAM_genie(
+          DLD_R1, DLD_R2, interleaver, deinterleaver, genie_info);
 
       // process return type
       if (result.return_type == "default") {

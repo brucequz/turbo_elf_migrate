@@ -1,0 +1,216 @@
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 2
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 13.7401 + 30.9628 + 12.5673 -> 57.2702
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 9
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 10.665 + 35.6828 + 21.4837 -> 67.8315
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 11
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 19.2708 + 34.9867 + 9.50535 -> 63.7628
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 12
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 9.88818 + 35.9827 + 10.9023 -> 56.7731
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 13
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 11.0131 + 34.2878 + 11.3607 -> 56.6617
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 18
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 17.5007 + 37.6157 + 18.0164 -> 73.1328
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 20
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 6.37232 + 37.5923 + 18.9482 -> 62.9128
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 21
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 16.4183 + 28.6528 + 12.8969 -> 57.968
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 22
+error type: best_available
+return metric: 100.894, found at: discovered decoder: 0, partial metric: 48.2668
+undiscovered metric: 52.6275
+true metric: 10.5453 + 38.7305 + 16.7606 -> 66.0364
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 23
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 10.0733 + 32.3726 + 15.3337 -> 57.7797
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 24
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 15.8399 + 29.9448 + 22.3874 -> 68.172
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 25
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 14.7266 + 39.6887 + 10.6073 -> 65.0226
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 27
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 14.2676 + 36.1034 + 7.61515 -> 57.9861
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 29
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 13.7979 + 30.671 + 17.7398 -> 62.2087
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 30
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 19.6763 + 33.6168 + 11.9543 -> 65.2474
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 31
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 14.2267 + 53.1249 + 11.8928 -> 79.2444
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 33
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 15.1089 + 35.3265 + 12.8821 -> 63.3176
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 37
+error type: best_available
+return metric: 168.044, found at: discovered decoder: 0, partial metric: 53.2664
+undiscovered metric: 114.777
+true metric: 18.9041 + 38.011 + 18.7416 -> 75.6567
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 38
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 16.4556 + 36.9073 + 17.3583 -> 70.7212
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 39
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 13.6789 + 36.2946 + 13.5718 -> 63.5453
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 42
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 17.1975 + 35.1746 + 7.83289 -> 60.2049
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 45
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 14.418 + 37.1654 + 14.1468 -> 65.7301
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 47
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 12.2523 + 26.8501 + 9.47819 -> 48.5806
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 48
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 11.7666 + 32.5256 + 21.2677 -> 65.56
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 52
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 9.6151 + 39.7935 + 14.9977 -> 64.4063
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 53
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 12.7 + 31.9094 + 11.6858 -> 56.2952
+
+//////// ERROR EVENT ///////// 
+SNR: 3 , max list size: 1000000
+trial number: 55
+error type: best_available
+return metric: 1e+10, found at: discovered decoder: -1, partial metric: -1
+undiscovered metric: 3.00861e-314
+true metric: 11.5323 + 36.0908 + 16.555 -> 64.1782
+

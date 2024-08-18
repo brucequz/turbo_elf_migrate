@@ -86,7 +86,9 @@ protected:
 };
 
 struct DLDInfo {
-	DLDInfo(): combined_metric(0.0), discovered_decoder_idx(-1), discovered_partial_metric(-1.0) {
+	DLDInfo(): combined_metric(0.0) {
+		discovered_decoder_idx = -1;
+		discovered_partial_metric = -1.0;
 		discovered_systematic_metric = -1.0;
 		message = std::vector<int>();
 		list_ranks = std::vector<int>();
@@ -140,6 +142,8 @@ public:
 	DLDInfo DualListDecoding_TurboELF_BAM_distance_spectrum(std::vector<double> txSig_0, std::vector<double> txSig_1, unsigned short int* interleaver_ptr, unsigned short int* deinterleaver_ptr);
 
 	DLDInfo DualListDecoding_TurboELF_BAM_genie(std::vector<double> txSig_0, std::vector<double> txSig_1, unsigned short int* interleaver_ptr, unsigned short int* deinterleaver_ptr, std::vector<double> genie_metrics);
+
+	DLDInfo DualListDecoding_TurboELF_BAM_Equal_Metric(std::vector<double> txSig_0, std::vector<double> txSig_1, unsigned short int* interleaver_ptr, unsigned short int* deinterleaver_ptr);
 
 private:
 	std::vector<ListDecoder> list_decoders_;

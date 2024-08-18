@@ -346,11 +346,9 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM(std::vector<double> txSig
 
   // continue traceback until the best combined metric is found
   int num_path_searched_0 = 0;
-  bool decoder_0_stop = false;
   bool decoder_0_LSE = false;
 
   int num_path_searched_1 = 0;
-  bool decoder_1_stop = false;
   bool decoder_1_LSE = false;
   bool best_combined_found = false;
 
@@ -365,7 +363,7 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM(std::vector<double> txSig
     if (num_path_searched_1 >= list_decoders_[1].listSize) {decoder_1_LSE = true;}
 
     // Decoder 0 traceback
-    if (!decoder_0_stop && !decoder_0_LSE) {
+    if (!decoder_0_LSE) {
 
       // Perform a single traceback
       ListDecoder::messageInformation mi_0 = list_decoders_[0].traceback_Single(
@@ -398,8 +396,6 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM(std::vector<double> txSig
         // Compute the full metric
         mi_0.full_metric = mi_0.metric + reproduced_R2_metrics;
 
-        // std::cout << "m0 full metric: " << mi_0.full_metric << std::endl;
-
         // Update BAM if necessary
         if (mi_0.full_metric < best_available.combined_metric) {
           best_available.combined_metric = mi_0.full_metric;
@@ -418,7 +414,7 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM(std::vector<double> txSig
     }
 
     // Decoder 1 traceback
-    if (!decoder_1_stop && !decoder_1_LSE) {
+    if (!decoder_1_LSE) {
 
       // Perform a single traceback
       ListDecoder::messageInformation mi_1 = list_decoders_[1].traceback_deinterleave_Single(
@@ -443,8 +439,6 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM(std::vector<double> txSig
 
         // Compute the full metric
         mi_1.full_metric = mi_1.metric + reproduced_R1_metrics;
-
-        // std::cout << "m1 full metric: " << mi_1.full_metric << std::endl;
 
         // Update BAM if necessary
         if (mi_1.full_metric < best_available.combined_metric) {
@@ -548,11 +542,9 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM_distance_spectrum(std::ve
 
   // continue traceback until the best combined metric is found
   int num_path_searched_0 = 0;
-  bool decoder_0_stop = false;
   bool decoder_0_LSE = false;
 
   int num_path_searched_1 = 0;
-  bool decoder_1_stop = false;
   bool decoder_1_LSE = false;
   bool best_combined_found = false;
 
@@ -563,7 +555,7 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM_distance_spectrum(std::ve
   while (!best_combined_found) {
 
     // Decoder 0 traceback
-    if (!decoder_0_stop && !decoder_0_LSE) {
+    if (!decoder_0_LSE) {
 
       // Perform a single traceback
       ListDecoder::messageInformation mi_0 = list_decoders_[0].traceback_Single(
@@ -621,7 +613,7 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM_distance_spectrum(std::ve
     }
 
     // Decoder 1 traceback
-    if (!decoder_1_stop && !decoder_1_LSE) {
+    if (!decoder_1_LSE) {
 
       // Perform a single traceback
       ListDecoder::messageInformation mi_1 = list_decoders_[1].traceback_deinterleave_Single(
@@ -688,18 +680,38 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM_distance_spectrum(std::ve
 
 
 DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM_genie(std::vector<double> txSig_0, std::vector<double> txSig_1, unsigned short int* interleaver_ptr, unsigned short int* deinterleaver_ptr, std::vector<double> genie_metrics) {
-/*
-* This function is the turbo version of the dual list decoder
+  /*
+  Input: 
+    - txSig_0: input vector of R1 + Sys symbols
+    - txSig_1: input vector of R2 + Sys symbols
+    - interleaver_ptr: an array of interleaver indices
+    - deinterleaver_ptr: an array of deinterleaver indices
 
-* Args:
-*       - txSig_1: X_r1 + X_sys
-*       - txSig_2: X_sys + X_r2
-* Output:
-*/
+    genie's special:
+    - genie_metrics (std::vector<double>):
+        - decoder0_threshold (double): decoder 0 should be able to decode correctly once mi_0.metric is greater or equal to decoder0_threshold.
+        - decoder1_threshold (double): decoder 1 should be able to decode correctly once mi_1.metric is greater or equal to decoder1_threshold.
+
+  Output:
+    - DLDInfo (struct):
+        -  discovered_decoder_idx (int)         : if best available is returned, which decoder discovered it. Default = -1
+        -  discovered_partial_metric (double)   : if best available is returned, what is the partial metric. Default = -1.0
+        -  discovered_systematic_metric (double): if best available is returned, what is the systematic metric = partial metric - R1/R2 metric. Default = -1.0
+        -  undiscovered_partial_metric (double) : if best available is returned, we re-encode, and then compare with the undiscovered codeword, accumulate only the R1/R2 metrics. Default = 
+        -  combined_metric (double)             : full metric for all three types of symbols. Default: 0.0
+        -  return_type (std::string)            : one of the following: "best_available", "default", "agreed". Default: "default"
+        -  message (std::vector<int>)           : decoded message. Default: empty vector
+        -  list_ranks (std::vector<int>)        : pair of list ranks. Default: {-1, -1}
+
+  Pseudo Code:
+    Construct trellis
+    Initialize minHeap
+    Until best 
+  */
 
   DLDInfo default_out;
   default_out.return_type = "default";
-  int pathLength = txSig_1.size() + 1;  // FIXME!
+  int pathLength = txSig_1.size() + 1;
 
   // Construct trellis
   std::vector<std::vector<ListDecoder::cell>> trellisInfo_0;
@@ -731,12 +743,7 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM_genie(std::vector<double>
 
   // continue traceback until the best combined metric is found
   int num_path_searched_0 = 0;
-  bool decoder_0_stop = false;
-  bool decoder_0_LSE = false;
-
   int num_path_searched_1 = 0;
-  bool decoder_1_stop = false;
-  bool decoder_1_LSE = false;
   bool best_combined_found = false;
 
   DLDInfo best_available;
@@ -744,161 +751,109 @@ DLDInfo DualListDecoder::DualListDecoding_TurboELF_BAM_genie(std::vector<double>
   best_available.return_type = "best_available";
   
   while (!best_combined_found) {
-    
-    // check list size exceeded for both decoders 
-    if (num_path_searched_0 >= list_decoders_[0].listSize) {decoder_0_LSE = true;}
-    if (num_path_searched_1 >= list_decoders_[1].listSize) {decoder_1_LSE = true;}
 
-    // Decoder 0 traceback
-    if (!decoder_0_stop && !decoder_0_LSE) {
+    ///// Decoder 0 traceback /////
 
-      // Perform a single traceback
-      ListDecoder::messageInformation mi_0 = list_decoders_[0].traceback_Single(
-          detourTree_0, num_path_searched_0, prev_paths_list_0, trellisInfo_0);
+    // Perform a single traceback
+    ListDecoder::messageInformation mi_0 = list_decoders_[0].traceback_Single(
+        detourTree_0, num_path_searched_0, prev_paths_list_0, trellisInfo_0);
 
-      if (!mi_0.listSizeExceeded) {
-        // Interleave
-        std::vector<int> interleaved_message;
-        for (int ii = 0; ii < mi_0.message.size(); ii++) {
-          interleaved_message.push_back(mi_0.message[interleaver_ptr[ii]]);
-        }
-        // Reencode
-        std::vector<int> reencoded_interleaved_message = trellis_ptrs_[1]->encoder(interleaved_message);
-
-        // Puncturing
-        for (size_t punct_idx : punc_idx_) {
-          reencoded_interleaved_message[punct_idx*2] = 0;
-        }
-
-        // Compute distance metric
-        // txSig1 is Y_r2 + pi_y_sys
-        // To compute the Y_r2 metrics, we only consider the even elements
-        std::vector<double> Y_r2_squared_diff = ComputeEvenElementsSquaredDifferences(reencoded_interleaved_message, txSig_1);
-        double reproduced_R2_metrics = std::accumulate(Y_r2_squared_diff.begin(), Y_r2_squared_diff.end(), 0.0);
-
-        // To compute the Pi_Y_sys metrics, we only consider the odd elements
-        std::vector<double> Pi_Y_sys_squared_diff = ComputeOddElementsSquaredDifferences(reencoded_interleaved_message, txSig_1);
-        double reproduced_Pi_Y_sys_metrics = std::accumulate(Pi_Y_sys_squared_diff.begin(), Pi_Y_sys_squared_diff.end(), 0.0);
-
-        // Compute the full metric
-        mi_0.full_metric = mi_0.metric + reproduced_R2_metrics;
-
-        // std::cout << "m0 full metric: " << mi_0.full_metric << std::endl;
-
-        // Update BAM if necessary
-        if (mi_0.full_metric < best_available.combined_metric) {
-          best_available.combined_metric = mi_0.full_metric;
-          best_available.discovered_decoder_idx = 0;
-          best_available.discovered_partial_metric = mi_0.metric;
-          best_available.message = mi_0.message;
-          best_available.discovered_systematic_metric = reproduced_Pi_Y_sys_metrics;
-          best_available.undiscovered_partial_metric = reproduced_R2_metrics;
-          best_available.list_ranks[0] = mi_0.listSize;
-          best_available.list_ranks[1] = -1;
-        }
-
-        if (mi_0.full_metric >= genie_metrics[0]) {
-          decoder_0_stop = true;
-          return best_available;
-        }
-
-        // Insert into the dictionary
-        dual_list_map_.insert(mi_0);
-      }
-    }
-
-    // Decoder 1 traceback
-    if (!decoder_1_stop && !decoder_1_LSE) {
-
-      // Perform a single traceback
-      ListDecoder::messageInformation mi_1 = list_decoders_[1].traceback_deinterleave_Single(
-          detourTree_1, num_path_searched_1, prev_paths_list_1, trellisInfo_1, deinterleaver_ptr);
-
-      if (!mi_1.listSizeExceeded) {
-        // Reencode
-        std::vector<int> reencoded_message = trellis_ptrs_[0]->encoder(mi_1.message);
-
-        // Puncturing
-        for (size_t punct_idx : punc_idx_) {
-          reencoded_message[punct_idx*2] = 0;
-        }
-  
-        // Compute distance metric for only Y_r1
-        // txSig0 is Y_r1 + Y_sys, so we discard the even position metric difference
-        std::vector<double> Y_r1_squared_diff = ComputeEvenElementsSquaredDifferences(reencoded_message, txSig_0);
-        double reproduced_R1_metrics = std::accumulate(Y_r1_squared_diff.begin(), Y_r1_squared_diff.end(), 0.0);
-
-        std::vector<double> Y_sys_squared_diff = ComputeOddElementsSquaredDifferences(reencoded_message, txSig_0);
-        double reproduced_Y_sys_metrics = std::accumulate(Y_sys_squared_diff.begin(), Y_sys_squared_diff.end(), 0.0);
-
-        // Compute the full metric
-        mi_1.full_metric = mi_1.metric + reproduced_R1_metrics;
-
-        // std::cout << "m1 full metric: " << mi_1.full_metric << std::endl;
-
-        // Update BAM if necessary
-        if (mi_1.full_metric < best_available.combined_metric) {
-          best_available.combined_metric = mi_1.full_metric;
-          best_available.discovered_decoder_idx = 1;
-          best_available.discovered_partial_metric = mi_1.metric;
-          best_available.discovered_systematic_metric = reproduced_Y_sys_metrics;
-          best_available.message = mi_1.message;
-          best_available.undiscovered_partial_metric = reproduced_R1_metrics;
-          best_available.list_ranks[0] = -1;
-          best_available.list_ranks[1] = mi_1.listSize;
-        }
-
-        // genie metric check
-        if (mi_1.full_metric >= genie_metrics[1]) {
-          decoder_0_stop = true;
-          return best_available;
-        }
-
-        // Insert into the dictionary
-        dual_list_map_.insert(mi_1);
-      }
-    }
-
-
-    // return agreed message if the queue is not empty
-    // check if both decoders have exceeded list size
-    if (dual_list_map_.queue_size() != 0 && std::fabs(dual_list_map_.get_top().combined_metric - best_available.combined_metric) < 1e-6) {
-      // std::cout << "best combined found AND returning it" << std::endl;
-      DLDInfo best_combined = dual_list_map_.pop_queue();
-      best_combined.return_type = "agreed";
-      return best_combined;
-
-    } else if (dual_list_map_.queue_size() != 0) {
-      
-      if (dual_list_map_.get_top().combined_metric - best_available.combined_metric < 1e-6) {
-        std::cout << "not significant at all" << std::endl; 
-      } else {
-        std::cout << "agreed metric: " << dual_list_map_.get_top().combined_metric << std::endl;
-        std::cout << "best available metric: " << best_available.combined_metric << std::endl;
-        std::cout << "metric difference: " << dual_list_map_.get_top().combined_metric - best_available.combined_metric << std::endl;
-      }
-    
+    // Genie decide stop or not
+    if (mi_0.metric > genie_metrics[0]) {
+      mi_0.listSizeExceeded = true;
       return best_available;
-
-    } else if (decoder_0_LSE && decoder_1_LSE) {
-      // std::cout << "best combined NOT found but returning best available" << std::endl;
-      if (best_available.undiscovered_partial_metric > 0.5 * best_available.discovered_partial_metric) {
-        // set list size to be 2 times the previous list size
-        if (list_decoders_[0].listSize > LISTSIZELIMIT || list_decoders_[1].listSize > LISTSIZELIMIT) {
-          return best_available;
-        }
-        list_decoders_[0].listSize += 5000;
-        list_decoders_[1].listSize += 5000;
-
-        decoder_0_LSE = false;
-        decoder_1_LSE = false;
-
-        continue;
-      } else {
-        return best_available;
-      }
     }
+
+    // Interleave
+    std::vector<int> interleaved_message;
+    for (int ii = 0; ii < mi_0.message.size(); ii++) {
+      interleaved_message.push_back(mi_0.message[interleaver_ptr[ii]]);
+    }
+    // Reencode
+    std::vector<int> reencoded_interleaved_message = trellis_ptrs_[1]->encoder(interleaved_message);
+
+    // Puncturing
+    for (size_t punct_idx : punc_idx_) {
+      reencoded_interleaved_message[punct_idx*2] = 0;
+    }
+
+    // Compute distance metric
+    // txSig1 is Y_r2 + pi_y_sys
+    // To compute the Y_r2 metrics, we only consider the even elements
+    std::vector<double> Y_r2_squared_diff = ComputeEvenElementsSquaredDifferences(reencoded_interleaved_message, txSig_1);
+    double reproduced_R2_metrics = std::accumulate(Y_r2_squared_diff.begin(), Y_r2_squared_diff.end(), 0.0);
+
+    // To compute the Pi_Y_sys metrics, we only consider the odd elements
+    std::vector<double> Pi_Y_sys_squared_diff = ComputeOddElementsSquaredDifferences(reencoded_interleaved_message, txSig_1);
+    double reproduced_Pi_Y_sys_metrics = std::accumulate(Pi_Y_sys_squared_diff.begin(), Pi_Y_sys_squared_diff.end(), 0.0);
+
+    // Compute the full metric
+    mi_0.full_metric = mi_0.metric + reproduced_R2_metrics;
+
+    // Update BAM if necessary
+    if (mi_0.full_metric < best_available.combined_metric) {
+      best_available.combined_metric = mi_0.full_metric;
+      best_available.discovered_decoder_idx = 0;
+      best_available.discovered_partial_metric = mi_0.metric;
+      best_available.message = mi_0.message;
+      best_available.discovered_systematic_metric = reproduced_Pi_Y_sys_metrics;
+      best_available.undiscovered_partial_metric = reproduced_R2_metrics;
+      best_available.list_ranks[0] = mi_0.listSize;
+      best_available.list_ranks[1] = -1;
+    }
+
+    // Insert into the dictionary
+    dual_list_map_.insert(mi_0);
+
+
+    ///// Decoder 1 traceback /////
+
+    // Perform a single traceback
+    ListDecoder::messageInformation mi_1 = list_decoders_[1].traceback_deinterleave_Single(
+        detourTree_1, num_path_searched_1, prev_paths_list_1, trellisInfo_1, deinterleaver_ptr);
+
+    // genie decide stop or not
+    if (mi_1.metric > genie_metrics[1]) {
+      mi_1.listSizeExceeded = true;
+      return best_available;
+    }
+
+    // Reencode
+    std::vector<int> reencoded_message = trellis_ptrs_[0]->encoder(mi_1.message);
+
+    // Puncturing
+    for (size_t punct_idx : punc_idx_) {
+      reencoded_message[punct_idx*2] = 0;
+    }
+
+    // Compute distance metric for only Y_r1
+    // txSig0 is Y_r1 + Y_sys, so we discard the even position metric difference
+    std::vector<double> Y_r1_squared_diff = ComputeEvenElementsSquaredDifferences(reencoded_message, txSig_0);
+    double reproduced_R1_metrics = std::accumulate(Y_r1_squared_diff.begin(), Y_r1_squared_diff.end(), 0.0);
+
+    std::vector<double> Y_sys_squared_diff = ComputeOddElementsSquaredDifferences(reencoded_message, txSig_0);
+    double reproduced_Y_sys_metrics = std::accumulate(Y_sys_squared_diff.begin(), Y_sys_squared_diff.end(), 0.0);
+
+    // Compute the full metric
+    mi_1.full_metric = mi_1.metric + reproduced_R1_metrics;
+
+    // Update BAM if necessary
+    if (mi_1.full_metric < best_available.combined_metric) {
+      best_available.combined_metric = mi_1.full_metric;
+      best_available.discovered_decoder_idx = 1;
+      best_available.discovered_partial_metric = mi_1.metric;
+      best_available.discovered_systematic_metric = reproduced_Y_sys_metrics;
+      best_available.message = mi_1.message;
+      best_available.undiscovered_partial_metric = reproduced_R1_metrics;
+      best_available.list_ranks[0] = -1;
+      best_available.list_ranks[1] = mi_1.listSize;
+    }
+
+    // Insert into the dictionary
+    dual_list_map_.insert(mi_1);
+    
   } // end of while loop
 
+  std::cerr << "Shoudn't be returning default out. CHECK YOUR CODE!" << std::endl; 
   return default_out;
 }
